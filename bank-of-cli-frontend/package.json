@@ -1,0 +1,9 @@
+{
+  "name": "bank-of-cli-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build"
+  }
+}
