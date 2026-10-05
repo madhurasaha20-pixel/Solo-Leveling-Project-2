@@ -1,3 +1,159 @@
 [
-  { "id": "t1", "accountId": "a1", "type": "deposit", "amount": 200, "date": "2026-01-01T12:00:00.000Z", "description": "Paycheck" }
+  {
+    "id": "t1",
+    "accountId": "ACC-1001",
+    "type": "deposit",
+    "amount": 2400.0,
+    "balanceAfter": 2400.0,
+    "date": "2026-09-01T13:05:00.000Z",
+    "description": "Paycheck"
+  },
+  {
+    "id": "t2",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 1150.0,
+    "balanceAfter": 1250.0,
+    "date": "2026-09-02T17:40:00.000Z",
+    "description": "Rent"
+  },
+  {
+    "id": "t3",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 86.42,
+    "balanceAfter": 1163.58,
+    "date": "2026-09-05T20:15:00.000Z",
+    "description": "Groceries"
+  },
+  {
+    "id": "t4",
+    "accountId": "ACC-1001",
+    "type": "transfer-out",
+    "amount": 150.0,
+    "balanceAfter": 1013.58,
+    "date": "2026-09-09T12:00:00.000Z",
+    "description": "Concert tickets",
+    "counterpartyAccountId": "ACC-1002"
+  },
+  {
+    "id": "t5",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 40.0,
+    "balanceAfter": 973.58,
+    "date": "2026-09-12T22:30:00.000Z",
+    "description": "ATM withdrawal"
+  },
+  {
+    "id": "t6",
+    "accountId": "ACC-1001",
+    "type": "deposit",
+    "amount": 2400.0,
+    "balanceAfter": 3373.58,
+    "date": "2026-09-15T13:05:00.000Z",
+    "description": "Paycheck"
+  },
+  {
+    "id": "t7",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 63.18,
+    "balanceAfter": 3310.4,
+    "date": "2026-09-18T19:45:00.000Z",
+    "description": "Gas"
+  },
+  {
+    "id": "t8",
+    "accountId": "ACC-1001",
+    "type": "transfer-in",
+    "amount": 45.0,
+    "balanceAfter": 3355.4,
+    "date": "2026-09-21T16:20:00.000Z",
+    "description": "Dinner split",
+    "counterpartyAccountId": "ACC-1002"
+  },
+  {
+    "id": "t9",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 1999.99,
+    "balanceAfter": 1355.41,
+    "date": "2026-09-24T21:00:00.000Z",
+    "description": "New laptop"
+  },
+  {
+    "id": "t10",
+    "accountId": "ACC-1001",
+    "type": "withdraw",
+    "amount": 54.66,
+    "balanceAfter": 1300.75,
+    "date": "2026-09-27T15:10:00.000Z",
+    "description": "Groceries"
+  },
+  {
+    "id": "t11",
+    "accountId": "ACC-1001",
+    "type": "deposit",
+    "amount": 25.0,
+    "balanceAfter": 1325.75,
+    "date": "2026-09-30T18:00:00.000Z",
+    "description": "Cashback reward"
+  },
+  {
+    "id": "t12",
+    "accountId": "ACC-1002",
+    "type": "deposit",
+    "amount": 3000.0,
+    "balanceAfter": 3000.0,
+    "date": "2026-09-01T14:00:00.000Z",
+    "description": "Opening deposit"
+  },
+  {
+    "id": "t13",
+    "accountId": "ACC-1002",
+    "type": "transfer-in",
+    "amount": 150.0,
+    "balanceAfter": 3150.0,
+    "date": "2026-09-09T12:00:00.000Z",
+    "description": "Concert tickets",
+    "counterpartyAccountId": "ACC-1001"
+  },
+  {
+    "id": "t14",
+    "accountId": "ACC-1002",
+    "type": "transfer-out",
+    "amount": 45.0,
+    "balanceAfter": 3105.0,
+    "date": "2026-09-21T16:20:00.000Z",
+    "description": "Dinner split",
+    "counterpartyAccountId": "ACC-1001"
+  },
+  {
+    "id": "t15",
+    "accountId": "ACC-1002",
+    "type": "withdraw",
+    "amount": 220.5,
+    "balanceAfter": 2884.5,
+    "date": "2026-09-25T19:00:00.000Z",
+    "description": "Utilities"
+  },
+  {
+    "id": "t16",
+    "accountId": "ACC-1003",
+    "type": "deposit",
+    "amount": 40.0,
+    "balanceAfter": 40.0,
+    "date": "2026-09-10T10:00:00.000Z",
+    "description": "Birthday money"
+  },
+  {
+    "id": "t17",
+    "accountId": "ACC-1003",
+    "type": "withdraw",
+    "amount": 15.0,
+    "balanceAfter": 25.0,
+    "date": "2026-09-20T10:00:00.000Z",
+    "description": "Coffee"
+  }
 ]

@@ -1,5 +1,0 @@
-{
-  "User": { "id": "string", "name": "string", "email": "string" },
-  "Account": { "id": "string", "userId": "string", "balance": "number", "currency": "string" },
-  "Transaction": { "id": "string", "accountId": "string", "type": "string", "amount": "number", "date": "string", "description": "string?" }
-}
