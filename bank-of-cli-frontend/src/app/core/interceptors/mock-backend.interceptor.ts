@@ -110,7 +110,7 @@ function register(req: HttpRequest<unknown>, db: MockDb) {
     createdAt: new Date().toISOString()
   };
   const account: Account = {
-    id: `ACC-${db.newId('')}`,
+    id: db.newId('ACC-'),
     userId: user.id,
     type: 'checking',
     balance: 0,
