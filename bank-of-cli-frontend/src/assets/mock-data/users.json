@@ -1,3 +1,23 @@
 [
-  { "id": "u1", "name": "Demo User", "email": "user@example.com" }
+  {
+    "id": "u1",
+    "name": "Demo User",
+    "email": "user@example.com",
+    "password": "password",
+    "createdAt": "2026-01-05T15:00:00.000Z"
+  },
+  {
+    "id": "u2",
+    "name": "Jordan Rivera",
+    "email": "jordan@example.com",
+    "password": "password123",
+    "createdAt": "2026-02-11T18:30:00.000Z"
+  },
+  {
+    "id": "u3",
+    "name": "Sam Lee",
+    "email": "sam@example.com",
+    "password": "password123",
+    "createdAt": "2026-06-20T14:10:00.000Z"
+  }
 ]
