@@ -35,8 +35,21 @@ export class MockDb {
   get accounts(): Account[] { return this.state.accounts; }
   get transactions(): Transaction[] { return this.state.transactions; }
 
+  /**
+   * Returns a new id like "u1000", "t1001" or "ACC-1002" that is not already
+   * used by any user, account or transaction (including the seed data).
+   */
   newId(prefix: string): string {
-    return `${prefix}${this.state.nextId++}`;
+    const taken = new Set<string>([
+      ...this.state.users.map(u => u.id),
+      ...this.state.accounts.map(a => a.id),
+      ...this.state.transactions.map(t => t.id)
+    ]);
+    let id: string;
+    do {
+      id = `${prefix}${this.state.nextId++}`;
+    } while (taken.has(id));
+    return id;
   }
 
   save(): void {
