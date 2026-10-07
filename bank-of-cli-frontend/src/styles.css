@@ -1,2 +1,189 @@
-/* Global styles placeholder */
-body { font-family: Arial, sans-serif; margin: 0; }
+@import "tailwindcss";
+
+/*
+ * Bank of CLI — Tailwind v4 theme.
+ * Source of truth: the Bank of CLI design system. Change tokens here, never in templates.
+ *
+ * The default Tailwind palette, radii and shadows are REMOVED below, so classes like
+ * bg-purple-500, rounded-2xl or shadow-lg simply don't exist in this project.
+ */
+
+/* ---------- 1. Raw values per theme (light default, dark by system or [data-theme]) ---------- */
+:root {
+  --bc-surface: #f6f5f1;
+  --bc-surface-raised: #ffffff;
+  --bc-surface-sunken: #eeece6;
+  --bc-border: #dcd9d0;
+  --bc-border-strong: #858176;
+  --bc-ink: #1b1f1c;
+  --bc-ink-muted: #565c58;
+  --bc-brand: #0d5c4a;
+  --bc-brand-hover: #094738;
+  --bc-brand-tint: #e2efea;
+  --bc-on-brand: #ffffff;
+  --bc-credit: #0b6a43;
+  --bc-credit-tint: #e3f2e9;
+  --bc-debit: #a42a1e;
+  --bc-debit-tint: #fbeae6;
+  --bc-on-debit: #ffffff;
+  --bc-pending: #855600;
+  --bc-pending-tint: #faf0da;
+  --bc-scrim: rgb(18 21 19 / 0.48);
+  --bc-elev-raised: 0 1px 2px rgb(27 31 28 / 0.06);
+  --bc-elev-overlay: 0 8px 24px rgb(27 31 28 / 0.14), 0 2px 4px rgb(27 31 28 / 0.06);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bc-surface: #121513;
+    --bc-surface-raised: #1a1e1b;
+    --bc-surface-sunken: #0d0f0e;
+    --bc-border: #2e3430;
+    --bc-border-strong: #6e7670;
+    --bc-ink: #eceeeb;
+    --bc-ink-muted: #a9b0ab;
+    --bc-brand: #62c4a4;
+    --bc-brand-hover: #84d4b9;
+    --bc-brand-tint: #173229;
+    --bc-on-brand: #08201a;
+    --bc-credit: #6fd4a1;
+    --bc-credit-tint: #15301f;
+    --bc-debit: #f4897c;
+    --bc-debit-tint: #3a1a16;
+    --bc-on-debit: #2a0d09;
+    --bc-pending: #e8b85e;
+    --bc-pending-tint: #33280f;
+    --bc-scrim: rgb(0 0 0 / 0.64);
+    --bc-elev-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+    --bc-elev-overlay: 0 8px 24px rgb(0 0 0 / 0.55);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bc-surface: #121513;
+  --bc-surface-raised: #1a1e1b;
+  --bc-surface-sunken: #0d0f0e;
+  --bc-border: #2e3430;
+  --bc-border-strong: #6e7670;
+  --bc-ink: #eceeeb;
+  --bc-ink-muted: #a9b0ab;
+  --bc-brand: #62c4a4;
+  --bc-brand-hover: #84d4b9;
+  --bc-brand-tint: #173229;
+  --bc-on-brand: #08201a;
+  --bc-credit: #6fd4a1;
+  --bc-credit-tint: #15301f;
+  --bc-debit: #f4897c;
+  --bc-debit-tint: #3a1a16;
+  --bc-on-debit: #2a0d09;
+  --bc-pending: #e8b85e;
+  --bc-pending-tint: #33280f;
+  --bc-scrim: rgb(0 0 0 / 0.64);
+  --bc-elev-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+  --bc-elev-overlay: 0 8px 24px rgb(0 0 0 / 0.55);
+  color-scheme: dark;
+}
+
+/* ---------- 2. Tailwind theme: only these utilities exist ---------- */
+@theme {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-*: initial;
+
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type ramp → text-heading-1, text-body, text-amount-display … (weights are set separately) */
+  --text-heading-1: 1.5rem;       --text-heading-1--line-height: 2rem;      --text-heading-1--letter-spacing: -0.01em;
+  --text-heading-2: 1.125rem;     --text-heading-2--line-height: 1.5rem;
+  --text-heading-3: 0.9375rem;    --text-heading-3--line-height: 1.5rem;
+  --text-body: 0.9375rem;         --text-body--line-height: 1.5rem;
+  --text-body-sm: 0.8125rem;      --text-body-sm--line-height: 1.25rem;
+  --text-label: 0.8125rem;        --text-label--line-height: 1rem;
+  --text-amount-display: 2.25rem; --text-amount-display--line-height: 2.75rem; --text-amount-display--letter-spacing: -0.02em;
+  --text-amount: 0.9375rem;       --text-amount--line-height: 1.5rem;
+  --text-code: 0.8125rem;         --text-code--line-height: 1.25rem;
+
+  /* Radii → rounded-sm (badges), rounded-md (everything else). rounded-full is built in. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  /* Layout widths → max-w-content, max-w-form */
+  --container-content: 1120px;
+  --container-form: 440px;
+
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+  --animate-toast-in: toast-in 200ms ease-out;
+  --animate-fade-in: fade-in 150ms ease-out;
+
+  @keyframes shimmer { from { translate: -100% 0; } to { translate: 100% 0; } }
+  @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* Colors and shadows point at the per-theme values, so dark mode needs no dark: classes. */
+@theme inline {
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-surface: var(--bc-surface);
+  --color-surface-raised: var(--bc-surface-raised);
+  --color-surface-sunken: var(--bc-surface-sunken);
+  --color-border: var(--bc-border);
+  --color-border-strong: var(--bc-border-strong);
+  --color-ink: var(--bc-ink);
+  --color-ink-muted: var(--bc-ink-muted);
+  --color-brand: var(--bc-brand);
+  --color-brand-hover: var(--bc-brand-hover);
+  --color-brand-tint: var(--bc-brand-tint);
+  --color-on-brand: var(--bc-on-brand);
+  --color-focus: var(--bc-brand);
+  --color-credit: var(--bc-credit);
+  --color-credit-tint: var(--bc-credit-tint);
+  --color-debit: var(--bc-debit);
+  --color-debit-tint: var(--bc-debit-tint);
+  --color-on-debit: var(--bc-on-debit);
+  --color-pending: var(--bc-pending);
+  --color-pending-tint: var(--bc-pending-tint);
+  --color-scrim: var(--bc-scrim);
+
+  --shadow-raised: var(--bc-elev-raised);
+  --shadow-overlay: var(--bc-elev-overlay);
+}
+
+/* ---------- 3. Base ---------- */
+@layer base {
+  html {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  /* One focus style for everything. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  /* Borders default to the hairline token instead of Tailwind's currentColor. */
+  *, ::before, ::after {
+    border-color: var(--color-border);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The spinner keeps turning (it carries meaning); everything else stops moving. */
+  *:not(.animate-spin), *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

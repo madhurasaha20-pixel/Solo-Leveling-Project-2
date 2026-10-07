@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "esnext",
-    "strict": true
-  }
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "angularCompilerOptions": { "strictTemplates": true }
 }
