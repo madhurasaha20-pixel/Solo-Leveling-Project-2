@@ -8,3 +8,4 @@ export * from './badge.component';
 export * from './alert.component';
 export * from './tabs.component';
 export * from './skeleton.component';
+export * from './account-menu.component';

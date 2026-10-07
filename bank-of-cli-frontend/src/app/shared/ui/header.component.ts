@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { Account, User } from '../../core/models';
+import { AccountMenuComponent } from './account-menu.component';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ButtonComponent } from './button.component';
+
+
+
 
 export interface NavLink { path: string; label: string; }
 
 /** Presentation only: the app shell supplies the user and handles sign-out. */
 @Component({
   selector: 'bc-app-header',
-  imports: [RouterLink, RouterLinkActive, ButtonComponent],
+  imports: [RouterLink, RouterLinkActive, AccountMenuComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'sticky top-0 z-30 block border-b border-border bg-surface-raised' },
   template: `
@@ -24,10 +28,8 @@ export interface NavLink { path: string; label: string; }
           }
         </nav>
         <div class="ml-auto flex min-w-0 items-center gap-2 text-label font-medium text-ink-muted">
-          @if (userName(); as name) {
-            <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-tint font-semibold text-brand">{{ initials() }}</span>
-            <span class="hidden max-w-form truncate sm:inline" [title]="name">{{ name }}</span>
-            <bc-button variant="ghost" (click)="signOut.emit()">Sign out</bc-button>
+        @if (user(); as u) {
+            <bc-account-menu [user]="u" [account]="account()" (signOut)="signOut.emit()" />
           } @else {
             <a routerLink="/login" class="inline-flex h-10 shrink-0 items-center rounded-md px-4 text-body font-medium text-brand transition-colors duration-[120ms] ease-out hover:bg-brand-tint">Sign in</a>
           }
@@ -45,10 +47,9 @@ export interface NavLink { path: string; label: string; }
   `,
 })
 export class AppHeaderComponent {
-  readonly userName = input<string | null>(null);
+  readonly user = input<User | null>(null);
+  readonly account = input<Account | null>(null);
   readonly links = input<NavLink[]>([]);
   readonly signOut = output<void>();
-  protected readonly initials = computed(() =>
-    (this.userName() ?? '').trim().split(/\s+/).filter(Boolean).map(part => part[0]).join('').slice(0, 2).toUpperCase(),
-  );
+  
 }
