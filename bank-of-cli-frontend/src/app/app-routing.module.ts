@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard, guestGuard } from './core/guards/auth.guards';
 import { AuthPageComponent } from './features/auth/auth-page.component';
-import { PageShellComponent } from './features/page-shell.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { TransactionsComponent } from './features/transactions/transactions.component';
 
 const routes: Routes = [
@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
-    component: PageShellComponent,
+    component: DashboardComponent,
     title: 'Dashboard · Bank of CLI',
     data: {
       title: 'Dashboard',
