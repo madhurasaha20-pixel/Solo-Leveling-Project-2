@@ -1,0 +1,15 @@
+<section>
+  <h1>Transaction History</h1>
+
+  <ul>
+    <li *ngFor="let t of transactions">
+      <app-transaction-item
+        [origin]="t.description ?? ''"
+        [amount]="t.amount"
+        [date]="t.date">
+      </app-transaction-item>
+    </li>
+  </ul>
+
+  <p *ngIf="transactions.length === 0">No transactions found.</p>
+</section>
