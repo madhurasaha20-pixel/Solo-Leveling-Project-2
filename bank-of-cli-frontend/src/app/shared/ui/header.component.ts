@@ -33,12 +33,14 @@ export interface NavLink { path: string; label: string; }
           }
         </div>
       </div>
-      <nav aria-label="Main" class="flex flex-wrap gap-1 pb-3 md:hidden">
-        @for (link of links(); track link.path) {
-          <a [routerLink]="link.path" routerLinkActive="bg-brand-tint !text-ink" ariaCurrentWhenActive="page"
-             class="inline-flex min-h-10 items-center rounded-md px-3 py-2 text-label font-medium text-ink-muted transition-colors duration-[120ms] ease-out hover:bg-surface-sunken hover:text-ink">{{ link.label }}</a>
-        }
-      </nav>
+      @if (links().length) {
+        <nav aria-label="Main" class="flex flex-wrap gap-1 pb-3 md:hidden">
+          @for (link of links(); track link.path) {
+            <a [routerLink]="link.path" routerLinkActive="bg-brand-tint !text-ink" ariaCurrentWhenActive="page"
+               class="inline-flex min-h-10 items-center rounded-md px-3 py-2 text-label font-medium text-ink-muted transition-colors duration-[120ms] ease-out hover:bg-surface-sunken hover:text-ink">{{ link.label }}</a>
+          }
+        </nav>
+      }
     </header>
   `,
 })
