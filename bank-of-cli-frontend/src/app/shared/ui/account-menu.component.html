@@ -1,0 +1,74 @@
+<button #trigger type="button" aria-controls="account-menu" [attr.aria-expanded]="open()"
+        [attr.aria-label]="'Account menu for ' + user().name" (click)="open.set(!open())"
+        class="inline-flex h-10 min-w-0 cursor-pointer items-center gap-2 rounded-md border border-transparent pl-1 pr-2 text-label font-medium text-ink-muted transition-colors duration-[120ms] ease-out hover:bg-surface-sunken hover:text-ink aria-expanded:bg-surface-sunken aria-expanded:text-ink">
+  <span aria-hidden="true" class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-tint font-semibold text-brand">{{ initials() }}</span>
+  <span class="hidden max-w-form truncate sm:inline">{{ user().name }}</span>
+  <bc-icon name="chevron-down" [size]="16" [class.rotate-180]="open()" />
+</button>
+
+@if (open()) {
+  <div id="account-menu" role="region" aria-label="Account"
+       class="absolute right-0 top-full z-40 mt-2 w-72 animate-fade-in divide-y rounded-md border bg-surface-raised text-left shadow-overlay">
+
+    <!-- 1. Identity -->
+    <div class="flex items-start gap-3 px-4 py-3">
+      <span aria-hidden="true" class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-tint text-body font-semibold text-brand">{{ initials() }}</span>
+      <div class="min-w-0">
+        <p class="truncate text-heading-3 font-semibold text-ink">{{ user().name }}</p>
+        <p class="break-all text-body-sm text-ink-muted">{{ user().email }}</p>
+        <p class="mt-1 text-body-sm text-ink-muted">Member since {{ user().createdAt | date: 'MMM y' }}</p>
+      </div>
+    </div>
+
+    <!-- 2. Checking account number -->
+    <div class="px-4 py-3">
+      <p class="mb-1 text-label font-medium text-ink-muted">Checking account</p>
+      <div class="flex min-h-10 items-center justify-between gap-3">
+        @if (account(); as acct) {
+          <span class="font-mono text-code tabular-nums text-ink">{{ acct.id }}</span>
+          <bc-button variant="secondary" size="sm" (click)="copyAccountNumber(acct.id)">
+            <bc-icon [name]="copied() ? 'check' : 'copy'" [size]="16" />{{ copied() ? 'Copied' : 'Copy' }}
+          </bc-button>
+        } @else {
+          <span class="text-body-sm text-ink-muted">Loading…</span>
+        }
+      </div>
+      <span class="sr-only" aria-live="polite">{{ copied() ? 'Account number copied' : '' }}</span>
+    </div>
+
+    <!-- 3. Balance -->
+    <div class="px-4 py-3">
+      <p class="mb-1 text-label font-medium text-ink-muted">Balance</p>
+      @if (account(); as acct) {
+        <p class="font-mono text-amount font-medium tabular-nums text-ink">{{ acct.balance | money }}</p>
+      } @else {
+        <p class="text-body-sm text-ink-muted">Loading…</p>
+      }
+    </div>
+
+    <!-- 4. Appearance (mock: only moves the selection) -->
+    <div class="px-4 py-3">
+      <p class="mb-2 text-label font-medium text-ink-muted">Appearance</p>
+      <div class="grid grid-cols-2 gap-1 rounded-md border bg-surface-sunken p-1">
+        @for (opt of appearanceOptions; track opt.value) {
+          <button type="button" [attr.aria-pressed]="appearance() === opt.value" (click)="pick.set(opt.value)"
+                  class="inline-flex h-8 cursor-pointer items-center justify-center gap-2 rounded-md text-label font-medium transition-colors duration-[120ms] ease-out"
+                  [class]="appearance() === opt.value ? 'bg-surface-raised text-ink shadow-raised' : 'text-ink-muted hover:text-ink'">
+            <bc-icon [name]="opt.icon" [size]="16" />{{ opt.label }}
+          </button>
+        }
+      </div>
+      <p class="mt-2 text-body-sm text-ink-muted">
+        {{ pick() ? 'Preview only. Theme switching is coming later.' : 'Matching your device' }}
+      </p>
+    </div>
+
+    <!-- 5. Sign out -->
+    <div class="p-2">
+      <button type="button" (click)="open.set(false); signOut.emit()"
+              class="flex h-10 w-full cursor-pointer items-center gap-2 rounded-md px-2 text-body font-medium text-debit transition-colors duration-[120ms] ease-out hover:bg-debit-tint">
+        <bc-icon name="log-out" [size]="16" />Sign out
+      </button>
+    </div>
+  </div>
+}
