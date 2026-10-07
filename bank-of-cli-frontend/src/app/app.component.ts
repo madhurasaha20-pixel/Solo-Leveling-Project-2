@@ -8,7 +8,8 @@ import { AuthService } from './core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="sr-only fixed left-4 top-4 z-50 min-h-10 items-center rounded-md bg-brand px-4 py-3 text-label font-medium text-on-brand transition-colors duration-[120ms] ease-out focus:not-sr-only">Skip to content</a>
-    <bc-app-header [userName]="(auth.currentUser$ | async)?.name ?? null" [links]="links" (signOut)="signOut()" />
+    @let user = auth.currentUser$ | async;
+    <bc-app-header [userName]="user?.name ?? null" [links]="user ? links : []" (signOut)="signOut()" />
     <main id="main-content" tabindex="-1" class="mx-auto max-w-content px-4 pb-12 pt-6 sm:px-6 sm:pt-8">
       <router-outlet />
       @if (signedOut() && router.url === '/login') {
