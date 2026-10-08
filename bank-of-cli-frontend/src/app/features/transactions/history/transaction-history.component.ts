@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { Transaction } from '../../../core/models/transaction';
+import { TransactionItemComponent } from '../../../shared/components/transaction-item/transaction-item.component';
 
 @Component({
     selector: 'app-transaction-history',
-    templateUrl: './transaction-history.component.html'
+    standalone: true,
+    imports: [TransactionItemComponent],
+    templateUrl: './transaction-history.component.html',
+    // styleUrls: ['./transaction-history.component.css']
 })
 
 export class TransactionHistoryComponent {
@@ -15,6 +19,7 @@ export class TransactionHistoryComponent {
             accountId: this.accountId,
             type: 'deposit',
             amount: 1500,
+            balanceAfter: 1500,
             date: '2026-10-01',
             description: 'DEPOSIT'
         },
@@ -23,20 +28,23 @@ export class TransactionHistoryComponent {
             accountId: this.accountId,
             type: 'withdraw',
             amount: 200,
+            balanceAfter: 1300,
             date: '2026-10-05',
             description: 'WITHDRAW'
         },
         {
             id: '3',
             accountId: this.accountId,
-            type: 'transfer',
+            type: 'transfer-out',
             amount: 20.62,
-            date: '2026-10-10',
-            description: 'TRANSFER to CHECKING ********3210'
+            balanceAfter: 1279.38,
+            date: '2026-10-07',
+            description: 'TRANSFER to CHECKING ********3210',
+            counterpartyAccountId: 'ACC-1002'
         }
     ];
 
     get transactions(): Transaction[] {
-        return this.allTransactions;
+        return this.allTransactions.filter(t => t.accountId === this.accountId);
     }
 }
