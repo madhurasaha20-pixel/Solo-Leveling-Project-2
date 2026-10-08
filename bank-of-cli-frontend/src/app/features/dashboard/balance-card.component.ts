@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';import { RouterLink } from '@angular/router';
 
 import { Account } from '../../core/models';
+import { BalanceVisibilityService } from '../../core/services/balance-visibility.service';
 import { formatMoney } from '../../shared/pipes/money.pipe';
 import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } from '../../shared/ui';
 
@@ -24,8 +24,7 @@ import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } fro
   template: `
     <bc-card title="Checking">
       @if (account()) {
-        <bc-button cardAction variant="ghost" size="sm" (click)="hidden.set(!hidden())">
-          {{ hidden() ? 'Show' : 'Hide' }}<span class="sr-only"> balance</span>
+        <bc-button cardAction variant="secondary" size="sm" (click)="visibility.toggle()">          {{ hidden() ? 'Show' : 'Hide' }}<span class="sr-only"> balance</span>
         </bc-button>
       }
 
@@ -84,9 +83,8 @@ export class BalanceCardComponent {
   readonly error = input<string | null>(null);
   readonly retry = output<void>();
 
-  /** Privacy toggle, like real banking apps. UI state only, so it lives here. */
-  protected readonly hidden = signal(false);
-
+/** Privacy toggle, like real banking apps. Shared with the account menu's Hide button. */  protected readonly visibility = inject(BalanceVisibilityService);
+  protected readonly hidden = this.visibility.hidden;
   protected readonly full = computed(() => formatMoney(this.account()?.balance ?? 0));
 
   /** "$1,325.75" -> { whole: "$1,325", cents: ".75" } */

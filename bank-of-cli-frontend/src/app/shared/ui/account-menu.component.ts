@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, input, output, signal, viewChild } from '@angular/core';
 
 import { Account, User } from '../../core/models';
+import { BalanceVisibilityService } from '../../core/services/balance-visibility.service';
 import { MoneyPipe } from '../pipes/money.pipe';
 import { ButtonComponent } from './button.component';
 import { IconComponent } from './icon.component';
@@ -9,9 +10,9 @@ import { IconComponent } from './icon.component';
 type Appearance = 'light' | 'dark';
 
 /**
- * Account pop-up in the header: identity, account number (copy), balance, appearance (mock), sign out.
- * Presentation only: the app shell passes the user and account in and handles sign-out.
- *   <bc-account-menu [user]="user" [account]="account" (signOut)="signOut()" />
+ * Account pop-up in the header: identity, account number (copy), balance (hide/show), appearance (mock), sign out.
+ * The app shell passes the user and account in and handles sign-out.
+ * Hide/show reads BalanceVisibilityService, so it stays in sync with the dashboard's balance card.
  */
 @Component({
   selector: 'bc-account-menu',
@@ -35,6 +36,8 @@ export class AccountMenuComponent {
 
   protected readonly open = signal(false);
   protected readonly copied = signal(false);
+  protected readonly visibility = inject(BalanceVisibilityService);
+
 
   /** Mock: the user's pick is shown in the menu but not applied to the page. Until they pick, show the device mode. */
   protected readonly pick = signal<Appearance | null>(null);

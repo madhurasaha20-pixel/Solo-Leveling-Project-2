@@ -40,7 +40,18 @@
     <div class="px-4 py-3">
       <p class="mb-1 text-label font-medium text-ink-muted">Balance</p>
       @if (account(); as acct) {
-        <p class="font-mono text-amount font-medium tabular-nums text-ink">{{ acct.balance | money }}</p>
+        <div class="flex items-center justify-between gap-3">
+                    @if (visibility.hidden()) {
+                      <p class="font-mono text-amount font-medium tabular-nums text-ink-muted">
+                       <span aria-hidden="true">$•••••</span><span class="sr-only">Balance hidden</span>
+                      </p>
+                    } @else {
+                      <p class="font-mono text-amount font-medium tabular-nums text-ink">{{ acct.balance | money }}</p>
+                    }
+                    <bc-button variant="secondary" size="sm" (click)="visibility.toggle()">
+                      {{ visibility.hidden() ? 'Show' : 'Hide' }}<span class="sr-only"> balance</span>
+                    </bc-button>
+                  </div>
       } @else {
         <p class="text-body-sm text-ink-muted">Loading…</p>
       }
