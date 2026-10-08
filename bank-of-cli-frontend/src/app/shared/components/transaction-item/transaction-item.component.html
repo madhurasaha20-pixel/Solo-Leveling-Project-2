@@ -1,7 +1,14 @@
-<div class="flex justify-between">
-  <div>
-    <span>{{ origin }}</span>
-    <span>{{ date | date: 'mediumDate' }}</span>
+<div class="flex items-center justify-between gap-4 py-3 border-b">
+  <div class="min-w-0">
+    <p class="truncate font-medium">{{ origin }}</p>
+    <p class="text-body-sm text-ink-muted">
+      {{ type | titlecase }} · {{ date | date: 'mediumDate' }}
+    </p>
   </div>
-  <span>{{ amount | currency }}</span>
+
+  <span
+    class="font-mono text-amount font-medium tabular-nums whitespace-nowrap"
+    [class.text-credit]="isCredit">
+    {{ isCredit ? '+' : '−' }}{{ amount | currency }}
+  </span>
 </div>
