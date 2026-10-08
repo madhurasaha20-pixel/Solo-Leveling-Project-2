@@ -11,7 +11,8 @@
     <script>
       try {
         var t = localStorage.getItem('bc-theme');
-        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+        
       } catch (e) {}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

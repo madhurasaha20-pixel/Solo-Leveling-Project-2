@@ -64,7 +64,7 @@
         @for (opt of appearanceOptions; track opt.value) {
           <button type="button" [attr.aria-pressed]="theme.appearance() === opt.value" (click)="theme.set(opt.value)"
                   class="inline-flex h-8 cursor-pointer items-center justify-center gap-2 rounded-md text-label font-medium transition-colors duration-[120ms] ease-out"
-                  [class]="theme.appearance() === opt.value ? 'bg-surface-raised text-ink shadow-raised' : 'text-ink-muted hover:text-ink'"></button>
+                  [class]="theme.appearance() === opt.value ? 'bg-surface-raised text-ink shadow-raised' : 'text-ink-muted hover:text-ink'">
             <bc-icon [name]="opt.icon" [size]="16" />{{ opt.label }}
           </button>
         }

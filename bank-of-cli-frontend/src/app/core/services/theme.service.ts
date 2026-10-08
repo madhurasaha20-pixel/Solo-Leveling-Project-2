@@ -7,7 +7,6 @@ const STORAGE_KEY = 'bc-theme';
 
 /**
  * Light/dark mode. 
- * With no saved pick, the app follows the device setting.
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -37,12 +36,12 @@ export class ThemeService {
     else this.root.removeAttribute('data-theme');
   }
 
-  private readSaved(): Appearance | null {
+  private readSaved(): Appearance {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved === 'light' || saved === 'dark' ? saved : null;
+      return saved === 'light' || saved === 'dark' ? saved : 'dark';
     } catch {
-      return null;
+      return 'dark';
     }
   }
 }
