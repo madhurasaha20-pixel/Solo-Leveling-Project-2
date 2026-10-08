@@ -20,23 +20,53 @@
       </div>
     </div>
 
-    <!-- 2. Checking account number -->
-    <div class="px-4 py-3">
-      <p class="mb-1 text-label font-medium text-ink-muted">Checking account</p>
-      <div class="flex min-h-10 items-center justify-between gap-3">
-        @if (account(); as acct) {
-          <span class="font-mono text-code tabular-nums text-ink">{{ acct.id }}</span>
-          <bc-button variant="secondary" size="sm" (click)="copyAccountNumber(acct.id)">
-            <bc-icon [name]="copied() ? 'check' : 'copy'" [size]="16" />{{ copied() ? 'Copied' : 'Copy' }}
-          </bc-button>
-        } @else {
-          <span class="text-body-sm text-ink-muted">Loading…</span>
-        }
-      </div>
-      <span class="sr-only" aria-live="polite">{{ copied() ? 'Account number copied' : '' }}</span>
-    </div>
+    <!-- Accounts -- -->
+  <div class="px-4 py-3">
+  <p class="mb-2 text-label font-medium text-ink-muted">Accounts</p>
 
-    <!-- 3. Balance -->
+  @if (accounts().length > 0) {
+    @for (acct of accounts(); track acct.id) {
+      <div class="mb-3 rounded-md border bg-surface-sunken p-3">
+        <p class="text-label font-medium text-ink">
+          {{ acct.type }}
+        </p>
+
+        <div class="mt-1 flex items-center justify-between gap-3">
+          <span class="font-mono text-code tabular-nums text-ink">
+            {{ acct.id }}
+          </span>
+
+          <bc-button
+            variant="secondary"
+            size="sm"
+            (click)="copyAccountNumber(acct.id)"
+          >
+            <bc-icon
+              [name]="copied() ? 'check' : 'copy'"
+              [size]="16"
+            />
+            {{ copied() ? 'Copied' : 'Copy' }}
+          </bc-button>
+        </div>
+
+        <p class="mt-2 font-mono text-amount font-medium tabular-nums text-ink">
+          {{ acct.balance | money }}
+        </p>
+      </div>
+    }
+  } @else {
+    <span class="text-body-sm text-ink-muted">Loading…</span>
+  }
+</div>
+
+
+  <span class="sr-only" aria-live="polite">
+    {{ copied() ? 'Account number copied' : '' }}
+  </span>
+</div>
+
+
+    <!-- 3. Balance 
     <div class="px-4 py-3">
       <p class="mb-1 text-label font-medium text-ink-muted">Balance</p>
       @if (account(); as acct) {
@@ -45,7 +75,7 @@
         <p class="text-body-sm text-ink-muted">Loading…</p>
       }
     </div>
-
+  -->
     <!-- 4. Appearance (mock: only moves the selection) -->
     <div class="px-4 py-3">
       <p class="mb-2 text-label font-medium text-ink-muted">Appearance</p>
@@ -70,5 +100,5 @@
         <bc-icon name="log-out" [size]="16" />Sign out
       </button>
     </div>
-  </div>
+  
 }

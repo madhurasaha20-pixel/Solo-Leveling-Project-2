@@ -18,11 +18,20 @@ export class TransactionsComponent {
   private readonly transactionsService = inject(TransactionService);
   private readonly accountService = inject(AccountService);
 
+  protected readonly accounts = computed(() => this.accountService.accounts);
+
+
   protected readonly transactionTypes: TransactionAction[] = ['deposit', 'withdraw', 'transfer'];
   protected readonly selectedType = signal<TransactionAction>('deposit');
   protected readonly submitted = signal(false);
   protected readonly successMessage = signal('');
   protected readonly loading = signal(false);
+  protected readonly selectedAccountId = signal<string | null>(null);
+
+  protected setAccount(accountId: string): void {
+    this.selectedAccountId.set(accountId);
+    this.successMessage.set('');
+  }
 
   protected readonly form = this.fb.group({
     amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
@@ -74,7 +83,13 @@ export class TransactionsComponent {
       return;
     }
 
-    const accountId = this.accountService.account?.id ?? 'ACC-1001';
+    //const accountId = this.accountService.account?.id ?? 'ACC-1001';
+    const accountId = this.selectedAccountId();
+
+    if (!accountId) {
+      this.successMessage.set('Please select an account.');
+      return;
+    }
     const amount = Number(this.form.value.amount);
     const description = this.form.value.description?.trim() ?? '';
 

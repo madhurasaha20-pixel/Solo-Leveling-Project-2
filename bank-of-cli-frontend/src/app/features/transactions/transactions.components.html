@@ -6,6 +6,31 @@
   </div>
 
   <div class="mb-8 grid gap-3 md:grid-cols-3">
+    <div class="mb-8">
+  <label
+    class="mb-2 block text-label font-medium text-ink"
+    for="account"
+  >
+    Account
+  </label>
+
+  <select
+    id="account"
+    [value]="selectedAccountId() ?? ''"
+    (change)="setAccount($any($event.target).value)"
+    class="w-full rounded-md border border-border bg-surface-raised px-3 py-2.5 text-body text-ink"
+  >
+    <option value="" disabled>
+      Select an account
+    </option>
+
+    @for (account of accounts(); track account.id) {
+      <option [value]="account.id">
+        {{ account.type | titlecase }} — {{ account.id }}
+      </option>
+    }
+  </select>
+</div>
     @for (type of transactionTypes; track type) {
       <button
         type="button"

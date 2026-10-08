@@ -26,7 +26,8 @@ type Appearance = 'light' | 'dark';
 })
 export class AccountMenuComponent {
   readonly user = input.required<User>();
-  readonly account = input<Account | null>(null);
+  //readonly account = input<Account | null>(null);
+  readonly accounts = input<Account[]>([]);
   readonly signOut = output<void>();
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);

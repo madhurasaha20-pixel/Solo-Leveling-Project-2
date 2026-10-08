@@ -29,7 +29,7 @@ export interface NavLink { path: string; label: string; }
         </nav>
         <div class="ml-auto flex min-w-0 items-center gap-2 text-label font-medium text-ink-muted">
         @if (user(); as u) {
-            <bc-account-menu [user]="u" [account]="account()" (signOut)="signOut.emit()" />
+            <bc-account-menu [user]="u" [accounts]="accounts()" (signOut)="signOut.emit()" />
           } @else {
             <a routerLink="/login" class="inline-flex h-10 shrink-0 items-center rounded-md px-4 text-body font-medium text-brand transition-colors duration-[120ms] ease-out hover:bg-brand-tint">Sign in</a>
           }
@@ -48,7 +48,9 @@ export interface NavLink { path: string; label: string; }
 })
 export class AppHeaderComponent {
   readonly user = input<User | null>(null);
-  readonly account = input<Account | null>(null);
+  //readonly account = input<Account | null>(null);
+  //changed to account for multiple accounts
+  readonly accounts = input<Account[]>([]);
   readonly links = input<NavLink[]>([]);
   readonly signOut = output<void>();
   
