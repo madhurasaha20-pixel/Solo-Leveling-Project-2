@@ -127,7 +127,7 @@ function register(req: HttpRequest<unknown>, db: MockDb) {
 // ---------------------------------------------------------------------------
 // Account endpoints
 // ---------------------------------------------------------------------------
-
+/*
 function myAccount(req: HttpRequest<unknown>, db: MockDb) {
   const user = currentUser(req, db);
   if (!user) return unauthorized();
@@ -135,6 +135,20 @@ function myAccount(req: HttpRequest<unknown>, db: MockDb) {
   const account = db.accounts.find(a => a.userId === user.id);
   if (!account) return fail(404, 'ACCOUNT_NOT_FOUND', 'No account found for this user.');
   return ok({ ...account });
+}
+*/
+//adjusted to receive multiple accounts
+function myAccount(req: HttpRequest<unknown>, db: MockDb) {
+  const user = currentUser(req, db);
+  if (!user) return unauthorized();
+
+  const accounts = db.accounts.filter(a => a.userId === user.id);
+
+  if (accounts.length === 0) {
+    return fail(404, 'ACCOUNT_NOT_FOUND', 'No accounts found for this user.');
+  }
+
+  return ok(accounts.map(account => ({ ...account })));
 }
 
 function listTransactions(req: HttpRequest<unknown>, db: MockDb, accountId: string) {
@@ -303,3 +317,43 @@ function fail(status: number, code: ApiErrorCode, message: string, field?: strin
 function unauthorized(): Observable<never> {
   return fail(401, 'UNAUTHORIZED', 'Your session has expired. Please log in again.');
 }
+
+
+function createAccount(req: HttpRequest<unknown>, db: MockDb) {
+  const body = asRecord(req.body);
+
+  const userId = str(body['userId']).trim();
+  const type = str(body['type']).trim().toLowerCase();
+
+  if (!userId) {
+    return fail(
+      400,
+      'VALIDATION_ERROR',
+      'User ID is required.',
+      'userId'
+    );
+  }
+
+  if (type !== 'checking' && type !== 'savings') {
+    return fail(
+      400,
+      'VALIDATION_ERROR',
+      'Account type must be checking or savings.',
+      'type'
+    );
+  }
+
+  const account: Account = {
+    id: db.newId('ACC-'),
+    userId,
+    type,
+    balance: 0,
+    currency: 'USD'
+  };
+
+  db.accounts.push(account);
+  db.save();
+
+  return ok(account, 201);
+}
+

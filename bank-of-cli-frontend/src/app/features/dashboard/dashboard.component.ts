@@ -19,22 +19,48 @@ import { BalanceCardComponent } from './balance-card.component';
   template: `
     <app-page-shell />
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
-      <app-balance-card [account]="account()" [updatedAt]="updatedAt()" [error]="error()" (retry)="refresh()" />
+      <!-- <app-balance-card [account]="account()" [updatedAt]="updatedAt()" [error]="error()" (retry)="refresh()" /> -->
+      <!-- updated to deal with multiple accouns -->
+      @for (account of accounts(); track account.id) {
+        <app-balance-card
+          [account]="account"
+          [updatedAt]="updatedAt()"
+          [error]="error()"
+          (retry)="refresh()"
+        />
+      }
       <!-- Transaction history card goes here: <app-... class="lg:col-span-2" /> -->
     </div>
   `,
 })
 export class DashboardComponent {
-  private readonly accounts = inject(AccountService);
+  //private readonly account = inject(AccountService);
+  private readonly accountService = inject(AccountService);
   private readonly destroyRef = inject(DestroyRef);
 
   /** Cached account; updates by itself after every deposit, withdraw or transfer. */
-  protected readonly account = toSignal(this.accounts.account$, { initialValue: null });
+  //protected readonly account = toSignal(this.accounts.account$, { initialValue: null });
+  //updated to deal with multiple accounts
+  protected readonly accounts = toSignal(
+  this.accountService.accounts$,
+  { initialValue: [] }
+);
   /** Time the balance last changed or was re-fetched; shown as "as of 12:31 PM". */
+  /*
   protected readonly updatedAt = toSignal(
     this.accounts.account$.pipe(filter(a => a !== null), map(() => new Date())),
     { initialValue: null },
   );
+  */
+ //added to account for multiple accounts
+ protected readonly updatedAt = toSignal(
+  this.accountService.accounts$.pipe(
+    filter(accounts => accounts.length > 0),
+    map(() => new Date())
+  ),
+  { initialValue: null },
+);
+ 
   protected readonly error = signal<string | null>(null);
 
   constructor() {
@@ -44,8 +70,8 @@ export class DashboardComponent {
   /** Re-fetch so the balance is current whenever the dashboard opens. A cached balance stays visible meanwhile. */
   protected refresh(): void {
     this.error.set(null);
-    this.accounts
-      .loadMyAccount()
+    this.accountService
+      .loadMyAccounts()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ error: (err: ApiError) => this.error.set(err.message) });
   }

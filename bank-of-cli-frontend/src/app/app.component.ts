@@ -34,7 +34,7 @@ export class AppComponent {
     this.auth.currentUser$.pipe(
       distinctUntilChanged((a, b) => a?.id === b?.id),
       filter(user => user !== null),
-      switchMap(() => this.accounts.loadMyAccount().pipe(catchError(() => EMPTY))),
+      switchMap(() => this.accounts.loadMyAccounts().pipe(catchError(() => EMPTY))),
       takeUntilDestroyed(),
     ).subscribe();
   }

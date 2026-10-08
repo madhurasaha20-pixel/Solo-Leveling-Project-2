@@ -7,7 +7,7 @@
 export interface Account {
   id: string;       // e.g. "ACC-1001"
   userId: string;
-  type: 'checking';
+  type: 'checking' | 'savings';
   balance: number;  // dollars, max 2 decimal places
   currency: 'USD';
 }
