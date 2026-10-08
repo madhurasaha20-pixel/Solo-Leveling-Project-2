@@ -9,11 +9,9 @@
     <meta name="description" content="View your balances, review transactions, and deposit, withdraw or transfer money.">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <script>
-      try {
-        var t = localStorage.getItem('bc-theme');
-        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
-        
-      } catch (e) {}
+      var t = null;
+      try { t = localStorage.getItem('bc-theme'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
