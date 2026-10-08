@@ -62,15 +62,15 @@
       <p class="mb-2 text-label font-medium text-ink-muted">Appearance</p>
       <div class="grid grid-cols-2 gap-1 rounded-md border bg-surface-sunken p-1">
         @for (opt of appearanceOptions; track opt.value) {
-          <button type="button" [attr.aria-pressed]="appearance() === opt.value" (click)="pick.set(opt.value)"
+          <button type="button" [attr.aria-pressed]="theme.appearance() === opt.value" (click)="theme.set(opt.value)"
                   class="inline-flex h-8 cursor-pointer items-center justify-center gap-2 rounded-md text-label font-medium transition-colors duration-[120ms] ease-out"
-                  [class]="appearance() === opt.value ? 'bg-surface-raised text-ink shadow-raised' : 'text-ink-muted hover:text-ink'">
+                  [class]="theme.appearance() === opt.value ? 'bg-surface-raised text-ink shadow-raised' : 'text-ink-muted hover:text-ink'"></button>
             <bc-icon [name]="opt.icon" [size]="16" />{{ opt.label }}
           </button>
         }
       </div>
       <p class="mt-2 text-body-sm text-ink-muted">
-        {{ pick() ? 'Preview only. Theme switching is coming later.' : 'Matching your device' }}
+        {{ theme.pick() ? 'Saved on this device' : 'Matching your device' }}
       </p>
     </div>
 
