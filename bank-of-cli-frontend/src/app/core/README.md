@@ -1,4 +1,6 @@
-# core/: Services, Models, Contracts (owner: Joshua Easo)
+# core/: Shared Services, Models, Contracts (owner: Joshua Easo)
+
+**Service organization:** Shared services may be placed in `core/services`. Feature-specific services may remain within their corresponding feature folder. The location should follow the service's scope and ownership.
 
 **Read `contracts/CONTRACTS.md` first.** It lists every endpoint, every JSON shape and every error code.
 

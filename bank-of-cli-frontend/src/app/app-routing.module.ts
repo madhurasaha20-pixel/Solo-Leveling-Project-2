@@ -22,7 +22,7 @@ const routes: Routes = [
     path: 'move-money',
     canActivate: [authGuard],
     component: TransactionsComponent,
-    title: 'Move money · Bank of CLI'
+    title: 'Manage Money · Bank of CLI'
   },
   {
     path: 'login',

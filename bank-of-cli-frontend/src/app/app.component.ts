@@ -28,7 +28,7 @@ export class AppComponent {
   protected readonly signedOut = signal(false);
   protected readonly links = [
     { path: '/dashboard', label: 'Dashboard' },
-    { path: '/move-money', label: 'Move money' },
+    { path: '/move-money', label: 'Manage Money' },
   ];
   constructor() {
     this.auth.currentUser$.pipe(
