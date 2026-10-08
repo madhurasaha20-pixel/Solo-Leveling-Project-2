@@ -46,7 +46,7 @@ import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } fro
         }
 
         <div class="mt-4 flex justify-end">
-          <bc-button variant="secondary" size="sm" routerLink="/move-money">Move money</bc-button>
+          <bc-button variant="secondary" size="sm" routerLink="/move-money">Manage Money</bc-button>
         </div>
 
         <!-- Receipt footer -->

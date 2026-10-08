@@ -10,12 +10,12 @@
       <button
         type="button"
         (click)="setTransactionType(type)"
-        class="rounded-md border px-4 py-3 text-left text-body font-medium transition-colors duration-150"
-        [class.border-brand="selectedType() === type"]
-        [class.bg-brand-tint="selectedType() === type"]
-        [class.text-brand="selectedType() === type"]
-        [class.border-border="selectedType() !== type"]
-        [class.bg-surface-raised="selectedType() !== type"]
+        class="rounded-md border px-4 py-3 text-left text-body font-medium transition-colors duration-[120ms] ease-out hover:bg-brand-tint"        
+        [class.border-brand]="selectedType() === type"
+        [class.bg-brand-tint]="selectedType() === type"
+        [class.text-brand]="selectedType() === type"
+        [class.border-border]="selectedType() !== type"
+        [class.bg-surface-raised]="selectedType() !== type"
       >
         {{ type | titlecase }}
       </button>
@@ -88,10 +88,6 @@
     }
     </button>
 
-    @if (successMessage()) {
-      <p class="mt-4 rounded-md border border-brand/30 bg-brand-tint px-3 py-2 text-body-sm text-brand" role="status">
-        {{ successMessage() }}
-      </p>
-    }
   </form>
 </section>
+<app-toast [message]="toastMessage()" [type]="toastType()" />
