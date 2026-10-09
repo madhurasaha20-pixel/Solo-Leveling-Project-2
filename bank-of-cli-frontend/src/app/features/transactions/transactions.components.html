@@ -99,7 +99,7 @@
                 formControlName="toAccountId"
                 class="w-full appearance-none rounded-md border border-border bg-surface px-3 py-2.5 pr-10 text-body text-ink"
               >
-                <option value="">Select destination account</option>
+                <!-- <option value="">Select destination account</option> -->
             
                 @for (account of accountList(); track account.id) {
                   @if (account.id !== form.controls.fromAccountId.value) {
