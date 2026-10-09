@@ -1,6 +1,6 @@
 <section>
   <h1>Transaction History</h1>
-
+  <transaction-summary [numberOfTransactions]="transactions.length"></transaction-summary>
   <ul>
     @for (t of transactions; track t.id) {
       <li>
@@ -18,3 +18,4 @@
 
   <p *ngIf="transactions.length === 0">No transactions found.</p>
 </section>
+

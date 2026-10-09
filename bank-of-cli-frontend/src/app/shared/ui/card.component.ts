@@ -10,7 +10,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   selector: 'bc-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block rounded-md border border-border bg-surface-raised shadow-raised' },
+  host: {
+  class: 'block rounded-md border border-border bg-surface-raised shadow-raised transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)]'
+},
   template: `
     <section [class]="flush() ? '' : 'p-4 sm:p-6'">
       @if (title()) {

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Transaction } from '../../../core/models/transaction';
 import { TransactionItemComponent } from '../../../shared/components/transaction-item/transaction-item.component';
+import { TransactionSummary } from './transaction-summary/transaction-summary';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-transaction-history',
     standalone: true,
-    imports: [TransactionItemComponent],
+    imports: [TransactionItemComponent, TransactionSummary, NgIf],
     templateUrl: './transaction-history.component.html',
     // styleUrls: ['./transaction-history.component.css']
 })
