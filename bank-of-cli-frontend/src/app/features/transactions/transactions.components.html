@@ -27,12 +27,13 @@
 
 
 
-
+<!--
         <div class="mb-5">
             <label class="mb-2 block text-label font-medium text-ink" for="fromAccountId">
                 Source account
             </label>
-
+            
+            
             <select id="fromAccountId" formControlName="fromAccountId"
                 (change)="onSourceAccountChange($any($event.target).value)"
                 class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink">
@@ -42,7 +43,34 @@
                 </option>
                 }
             </select>
-        </div>
+        </div>  -->
+<div class="mb-5">
+<div class="relative">
+  <select
+    id="fromAccountId"
+    formControlName="fromAccountId"
+    (change)="onSourceAccountChange($any($event.target).value)"
+    class="w-full appearance-none rounded-md border border-border bg-surface px-3 py-2.5 pr-10 text-body text-ink"
+  >
+    @for (account of accountList(); track account.id) {
+      <option [value]="account.id">
+        {{ account.type | titlecase }} — {{ account.id }}
+      </option>
+    }
+  </select>
+
+  
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute right-4 top-1/2 size-2 -translate-y-1/2 rotate-45 border-b-2 border-r-2 border-current"
+  ></span>
+</div>
+</div>
+
+
+
+
+
 
         @if (selectedType() === 'transfer') {
         <div class="mb-5">
@@ -50,6 +78,7 @@
                 Destination account
             </label>
 
+            <!--
             <select id="toAccountId" formControlName="toAccountId"
                 class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink">
                 <option value="">Select destination account</option>
@@ -61,8 +90,35 @@
                 </option>
                 }
                 }
-            </select>
+            </select> -->
 
+
+            <div class="relative">
+              <select
+                id="toAccountId"
+                formControlName="toAccountId"
+                class="w-full appearance-none rounded-md border border-border bg-surface px-3 py-2.5 pr-10 text-body text-ink"
+              >
+                <option value="">Select destination account</option>
+            
+                @for (account of accountList(); track account.id) {
+                  @if (account.id !== form.controls.fromAccountId.value) {
+                    <option [value]="account.id">
+                      {{ account.type | titlecase }} — {{ account.id }}
+                    </option>
+                  }
+                }
+              </select>
+          
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute right-4 top-1/2 size-2 -translate-y-1/2 rotate-45 border-b-2 border-r-2 border-current"
+              ></span>
+            </div>
+
+
+
+            
             @if (isFieldInvalid('toAccountId')) {
             <p class="mt-2 text-body-sm text-debit">
                 Please select a destination account.
