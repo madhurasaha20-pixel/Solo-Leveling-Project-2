@@ -1,93 +1,104 @@
 <section class="mx-auto max-w-4xl">
-  <div class="mb-8">
-    <p class="text-label font-medium uppercase tracking-[0.12em] text-ink-muted">Transaction center</p>
-    <h1 class="mt-2 text-heading-1 font-semibold text-ink">Manage Money</h1>
-    <p class="mt-2 max-w-2xl text-body text-ink-muted">Choose a transaction type, enter the amount, and complete your request with built-in validation.</p>
-  </div>
-
-  <div class="mb-8 grid gap-3 md:grid-cols-3">
-    @for (type of transactionTypes; track type) {
-      <button
-        type="button"
-        (click)="setTransactionType(type)"
-        class="rounded-md border px-4 py-3 text-left text-body font-medium transition-colors duration-[120ms] ease-out hover:bg-brand-tint"        
-        [class.border-brand]="selectedType() === type"
-        [class.bg-brand-tint]="selectedType() === type"
-        [class.text-brand]="selectedType() === type"
-        [class.border-border]="selectedType() !== type"
-        [class.bg-surface-raised]="selectedType() !== type"
-      >
-        {{ type | titlecase }}
-      </button>
-    }
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="rounded-xl border border-border bg-surface-raised p-6 shadow-raised">
-    <div class="mb-5">
-      <p class="text-body font-medium text-ink">{{ selectedType() | titlecase }} funds</p>
-      <p class="mt-1 text-body-sm text-ink-muted">{{ helpText() }}</p>
+    <div class="mb-8">
+        <p class="text-label font-medium uppercase tracking-[0.12em] text-ink-muted">Transaction center</p>
+        <h1 class="mt-2 text-heading-1 font-semibold text-ink">Manage Money</h1>
+        <p class="mt-2 max-w-2xl text-body text-ink-muted">Choose a transaction type, enter the amount, and complete
+            your request with built-in validation.</p>
     </div>
 
-    @if (selectedType() === 'transfer') {
-      <div class="mb-5">
-        <label class="mb-2 block text-label font-medium text-ink" for="toAccountId">Destination account</label>
-        <input
-          id="toAccountId"
-          type="text"
-          formControlName="toAccountId"
-          placeholder="ACC-1002"
-          class="w-full rounded-md border bg-surface px-3 py-2.5 text-body text-ink placeholder:text-ink-muted"
-          [class.border-debit]="isFieldInvalid('toAccountId')"
-          [class.border-border]="!isFieldInvalid('toAccountId')"
-        />
-        @if (isFieldInvalid('toAccountId')) {
-          <p class="mt-2 text-body-sm text-debit">Please enter a valid destination account number.</p>
+    <div class="mb-8 grid gap-3 md:grid-cols-3">
+        @for (type of transactionTypes; track type) {
+        <button type="button" (click)="setTransactionType(type)"
+            class="rounded-md border px-4 py-3 text-left text-body font-medium transition-colors duration-[120ms] ease-out hover:bg-brand-tint"
+            [class.border-brand]="selectedType() === type" [class.bg-brand-tint]="selectedType() === type"
+            [class.text-brand]="selectedType() === type" [class.border-border]="selectedType() !== type"
+            [class.bg-surface-raised]="selectedType() !== type">
+            {{ type | titlecase }}
+        </button>
         }
-      </div>
-    }
-
-    <div class="mb-5">
-      <label class="mb-2 block text-label font-medium text-ink" for="amount">Amount</label>
-      <input
-        id="amount"
-        type="number"
-        min="0.01"
-        step="0.01"
-        inputmode="decimal"
-        formControlName="amount"
-        placeholder="0.00"
-        class="w-full rounded-md border bg-surface px-3 py-2.5 text-body text-ink placeholder:text-ink-muted"
-        [class.border-debit]="isFieldInvalid('amount')"
-        [class.border-border]="!isFieldInvalid('amount')"
-      />
-      @if (isFieldInvalid('amount')) {
-        <p class="mt-2 text-body-sm text-debit">Amount is required and must be greater than zero.</p>
-      }
     </div>
 
-    <div class="mb-6">
-      <label class="mb-2 block text-label font-medium text-ink" for="description">Description</label>
-      <input
-        id="description"
-        type="text"
-        formControlName="description"
-        placeholder="Optional reference"
-        class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink placeholder:text-ink-muted"
-      />
-    </div>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate
+        class="rounded-xl border border-border bg-surface-raised p-6 shadow-raised">
+        <div class="mb-5">
+            <p class="text-body font-medium text-ink">{{ selectedType() | titlecase }} funds</p>
+            <p class="mt-1 text-body-sm text-ink-muted">{{ helpText() }}</p>
+        </div>
 
-    <button
-      type="submit"
-      class="inline-flex w-full items-center justify-center rounded-md bg-brand px-4 py-3 text-body font-medium text-on-brand transition-colors duration-150 hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
-      [disabled]="form.invalid || loading()"
-    >
-      @if (loading()) {
-        Processing...
-    } @else {
-        {{ selectedType() | titlecase }} money
-    }
-    </button>
 
-  </form>
+
+
+        <div class="mb-5">
+            <label class="mb-2 block text-label font-medium text-ink" for="fromAccountId">
+                Source account
+            </label>
+
+            <select id="fromAccountId" formControlName="fromAccountId"
+                (change)="onSourceAccountChange($any($event.target).value)"
+                class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink">
+                @for (account of accountList(); track account.id) {
+                <option [value]="account.id">
+                    {{ account.type | titlecase }} — {{ account.id }}
+                </option>
+                }
+            </select>
+        </div>
+
+        @if (selectedType() === 'transfer') {
+        <div class="mb-5">
+            <label class="mb-2 block text-label font-medium text-ink" for="toAccountId">
+                Destination account
+            </label>
+
+            <select id="toAccountId" formControlName="toAccountId"
+                class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink">
+                <option value="">Select destination account</option>
+
+                @for (account of accountList(); track account.id) {
+                @if (account.id !== form.controls.fromAccountId.value) {
+                <option [value]="account.id">
+                    {{ account.type | titlecase }} — {{ account.id }}
+                </option>
+                }
+                }
+            </select>
+
+            @if (isFieldInvalid('toAccountId')) {
+            <p class="mt-2 text-body-sm text-debit">
+                Please select a destination account.
+            </p>
+            }
+        </div>
+        }
+
+
+        <div class="mb-5">
+            <label class="mb-2 block text-label font-medium text-ink" for="amount">Amount</label>
+            <input id="amount" type="number" min="0.01" step="0.01" inputmode="decimal" formControlName="amount"
+                placeholder="0.00"
+                class="w-full rounded-md border bg-surface px-3 py-2.5 text-body text-ink placeholder:text-ink-muted"
+                [class.border-debit]="isFieldInvalid('amount')" [class.border-border]="!isFieldInvalid('amount')" />
+            @if (isFieldInvalid('amount')) {
+            <p class="mt-2 text-body-sm text-debit">Amount is required and must be greater than zero.</p>
+            }
+        </div>
+
+        <div class="mb-6">
+            <label class="mb-2 block text-label font-medium text-ink" for="description">Description</label>
+            <input id="description" type="text" formControlName="description" placeholder="Optional reference"
+                class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-body text-ink placeholder:text-ink-muted" />
+        </div>
+
+        <button type="submit"
+            class="inline-flex w-full items-center justify-center rounded-md bg-brand px-4 py-3 text-body font-medium text-on-brand transition-colors duration-150 hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="form.invalid || loading()">
+            @if (loading()) {
+            Processing...
+            } @else {
+            {{ selectedType() | titlecase }} money
+            }
+        </button>
+
+    </form>
 </section>
 <app-toast [message]="toastMessage()" [type]="toastType()" />
