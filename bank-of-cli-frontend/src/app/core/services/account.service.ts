@@ -88,4 +88,24 @@ loadMyAccounts(): Observable<Account[]> {
   
     this.accountsSubject.next(accounts);
   }
+
+  
+/** POST /accounts. Creates a new checking or savings account. */
+createAccount(
+  userId: string,
+  type: 'checking' | 'savings'
+): Observable<Account> {
+  return this.http.post<Account>(`${this.api}/accounts`, {
+    userId,
+    type
+  }).pipe(
+    tap(newAccount => {
+      this.accountsSubject.next([
+        ...this.accountsSubject.value,
+        newAccount
+      ]);
+    }),
+    catchError(err => throwError(() => toApiError(err)))
+  );
+}
 }

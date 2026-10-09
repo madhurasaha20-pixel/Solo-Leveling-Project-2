@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { Account } from '../../core/models';
 import { formatMoney } from '../../shared/pipes/money.pipe';
 import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } from '../../shared/ui';
+import { TitleCasePipe } from '@angular/common';
+import { effect} from '@angular/core';
 
 /**
  * CardView [Balance]. Presentational only: the dashboard page passes the data in.
@@ -18,14 +20,21 @@ import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } fro
  */
 @Component({
   selector: 'app-balance-card',
-  imports: [DatePipe, RouterLink, AlertComponent, ButtonComponent, CardComponent, SkeletonComponent],
+  imports: [DatePipe, RouterLink, AlertComponent, ButtonComponent, CardComponent, SkeletonComponent, TitleCasePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
   template: `
-    <bc-card title="Checking">
+    <!-- <bc-card title="Checking"> -->
+    <bc-card [title]="account()?.type | titlecase"> 
       @if (account()) {
-        <bc-button cardAction variant="ghost" size="sm" (click)="hidden.set(!hidden())">
-          {{ hidden() ? 'Show' : 'Hide' }}<span class="sr-only"> balance</span>
+        <bc-button
+          cardAction
+          variant="ghost"
+          size="sm"
+          (click)="toggleHidden()"
+        >
+          {{ hidden() ? 'Show' : 'Hide' }}
+          <span class="sr-only"> balance</span>
         </bc-button>
       }
 
@@ -85,7 +94,11 @@ export class BalanceCardComponent {
   readonly retry = output<void>();
 
   /** Privacy toggle, like real banking apps. UI state only, so it lives here. */
-  protected readonly hidden = signal(false);
+  //protected readonly hidden = signal(false);
+  /*
+  protected readonly hidden = signal(
+  sessionStorage.getItem('balanceHidden') === 'true'
+);*/
 
   protected readonly full = computed(() => formatMoney(this.account()?.balance ?? 0));
 
@@ -95,4 +108,35 @@ export class BalanceCardComponent {
     const dot = text.lastIndexOf('.');
     return dot === -1 ? { whole: text, cents: '' } : { whole: text.slice(0, dot), cents: text.slice(dot) };
   });
+
+  protected readonly hidden = signal(false);
+
+constructor() {
+  effect(() => {
+    const accountId = this.account()?.id;
+
+    if (accountId) {
+      const savedValue = sessionStorage.getItem(
+        `balanceHidden-${accountId}`
+      );
+
+      this.hidden.set(savedValue === 'true');
+    }
+  });
+}
+
+protected toggleHidden(): void {
+  const newValue = !this.hidden();
+  this.hidden.set(newValue);
+
+  const accountId = this.account()?.id;
+
+  if (accountId) {
+    sessionStorage.setItem(
+      `balanceHidden-${accountId}`,
+      String(newValue)
+    );
+  }
+}
+
 }

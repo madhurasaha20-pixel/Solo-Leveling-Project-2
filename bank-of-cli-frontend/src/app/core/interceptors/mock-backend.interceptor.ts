@@ -54,6 +54,10 @@ function route(req: HttpRequest<unknown>, path: string, db: MockDb): Observable<
 
   if (method === 'GET' && path === '/accounts/me') return myAccount(req, db);
 
+  if (method === 'POST' && path === '/accounts') {
+    return createAccount(req, db);
+  }
+
   if (method === 'GET' && (m = path.match(/^\/accounts\/([^/]+)\/transactions$/))) {
     return listTransactions(req, db, decodeURIComponent(m[1]));
   }

@@ -37,15 +37,15 @@
           </span>
 
           <bc-button
-            variant="secondary"
-            size="sm"
-            (click)="copyAccountNumber(acct.id)"
-          >
-            <bc-icon
-              [name]="copied() ? 'check' : 'copy'"
-              [size]="16"
-            />
-            {{ copied() ? 'Copied' : 'Copy' }}
+                   variant="secondary"
+          size="sm"
+          (click)="copyAccountNumber(acct.id)"
+        >
+          <bc-icon
+            [name]="copiedAccountId() === acct.id ? 'check' : 'copy'"
+            [size]="16"
+          />
+          {{ copiedAccountId() === acct.id ? 'Copied' : 'Copy' }}
           </bc-button>
         </div>
 
@@ -59,11 +59,9 @@
   }
 </div>
 
-
-  <span class="sr-only" aria-live="polite">
-    {{ copied() ? 'Account number copied' : '' }}
-  </span>
-</div>
+<span class="sr-only" aria-live="polite">
+  {{ copiedAccountId() ? 'Account number copied' : '' }}
+</span>
 
 
     <!-- 3. Balance 
@@ -100,5 +98,5 @@
         <bc-icon name="log-out" [size]="16" />Sign out
       </button>
     </div>
-  
+  </div>
 }

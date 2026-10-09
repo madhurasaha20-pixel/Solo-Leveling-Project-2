@@ -35,7 +35,8 @@ export class AccountMenuComponent {
   private copiedTimer?: ReturnType<typeof setTimeout>;
 
   protected readonly open = signal(false);
-  protected readonly copied = signal(false);
+  //protected readonly copied = signal(false);
+  protected readonly copiedAccountId = signal<string | null>(null);
 
   /** Mock: the user's pick is shown in the menu but not applied to the page. Until they pick, show the device mode. */
   protected readonly pick = signal<Appearance | null>(null);
@@ -60,10 +61,22 @@ export class AccountMenuComponent {
     this.trigger().nativeElement.focus();
   }
 
+  /*
   protected async copyAccountNumber(id: string): Promise<void> {
     await navigator.clipboard.writeText(id);
     this.copied.set(true);
     clearTimeout(this.copiedTimer);
     this.copiedTimer = setTimeout(() => this.copied.set(false), 2000);
   }
+    */
+   protected async copyAccountNumber(accountId: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(accountId);
+    this.copiedAccountId.set(accountId);
+  } catch {
+    console.error('Failed to copy account number.');
+  }
+   clearTimeout(this.copiedTimer);
+    this.copiedTimer = setTimeout(() => this.copiedAccountId.set(null), 2000);
+}
 }
