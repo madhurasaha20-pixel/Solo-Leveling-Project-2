@@ -23,7 +23,7 @@ import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } fro
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
   template: `
-    <bc-card title="Checking">
+    <bc-card [title]="title()">
       @if (account()) {
         <bc-button cardAction variant="ghost" size="sm" (click)="visibility.toggle()">        
           {{ hidden() ? 'Show' : 'Hide' }}<span class="sr-only"> balance</span>
@@ -79,6 +79,7 @@ import { AlertComponent, ButtonComponent, CardComponent, SkeletonComponent } fro
 })
 export class BalanceCardComponent {
   readonly account = input<Account | null>(null);
+  readonly title = input('Checking');
   /** When the balance was last confirmed by the server. */
   readonly updatedAt = input<Date | null>(null);
   /** User-facing message from ApiError.message; only shown when there is no account to display. */

@@ -53,6 +53,7 @@ function route(req: HttpRequest<unknown>, path: string, db: MockDb): Observable<
   if (method === 'POST' && path === '/auth/logout') return ok(null, 204);
 
   if (method === 'GET' && path === '/accounts/me') return myAccount(req, db);
+  if (method === 'GET' && path === '/accounts') return myAccounts(req, db);
 
   if (method === 'GET' && (m = path.match(/^\/accounts\/([^/]+)\/transactions$/))) {
     return listTransactions(req, db, decodeURIComponent(m[1]));
@@ -109,15 +110,23 @@ function register(req: HttpRequest<unknown>, db: MockDb) {
     password,
     createdAt: new Date().toISOString()
   };
-  const account: Account = {
-    id: db.newId('ACC-'),
-    userId: user.id,
-    type: 'checking',
-    balance: 0,
-    currency: 'USD'
-  };
+  const checkingAccount: Account = {
+  id: db.newId('ACC-'),
+  userId: user.id,
+  type: 'checking',
+  balance: 0,
+  currency: 'USD'
+};
+
+const savingsAccount: Account = {
+  id: db.newId('ACC-'),
+  userId: user.id,
+  type: 'savings',
+  balance: 0,
+  currency: 'USD'
+};
   db.users.push(user);
-  db.accounts.push(account);
+  db.accounts.push(checkingAccount, savingsAccount);
   db.save();
 
   const res: AuthResponse = { token: tokenFor(user), user: publicUser(user) };
@@ -135,6 +144,17 @@ function myAccount(req: HttpRequest<unknown>, db: MockDb) {
   const account = db.accounts.find(a => a.userId === user.id);
   if (!account) return fail(404, 'ACCOUNT_NOT_FOUND', 'No account found for this user.');
   return ok({ ...account });
+}
+
+function myAccounts(req: HttpRequest<unknown>, db: MockDb) {
+  const user = currentUser(req, db);
+  if (!user) return unauthorized();
+
+  const accounts = db.accounts
+    .filter(a => a.userId === user.id)
+    .map(a => ({ ...a }));
+
+  return ok(accounts);
 }
 
 function listTransactions(req: HttpRequest<unknown>, db: MockDb, accountId: string) {

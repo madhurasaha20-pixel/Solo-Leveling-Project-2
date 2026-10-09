@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
 
-import { ApiError } from '../../core/models';
+import { Account, ApiError } from '../../core/models';
 import { AccountService } from '../../core/services/account.service';
 import { PageShellComponent } from '../page-shell.component';
 import { BalanceCardComponent } from './balance-card.component';
@@ -19,7 +19,18 @@ import { BalanceCardComponent } from './balance-card.component';
   template: `
     <app-page-shell />
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
-      <app-balance-card [account]="account()" [updatedAt]="updatedAt()" [error]="error()" (retry)="refresh()" />
+
+    
+  <app-balance-card [account]="account()" [updatedAt]="updatedAt()" [error]="error()" (retry)="refresh()" />
+
+  <app-balance-card
+  title="Savings"
+  [account]="savingsAccount()"
+  [updatedAt]="updatedAt()"
+  [error]="error()"
+  (retry)="refresh()"
+  />      
+      
       <!-- Transaction history card goes here: <app-... class="lg:col-span-2" /> -->
     </div>
   `,
@@ -30,6 +41,8 @@ export class DashboardComponent {
 
   /** Cached account; updates by itself after every deposit, withdraw or transfer. */
   protected readonly account = toSignal(this.accounts.account$, { initialValue: null });
+  protected readonly accountList = toSignal(this.accounts.accounts$, { initialValue: [] as Account[] });
+  protected readonly savingsAccount = () => this.accountList().find(a => a.type === 'savings') ?? null;
   /** Time the balance last changed or was re-fetched; shown as "as of 12:31 PM". */
   protected readonly updatedAt = toSignal(
     this.accounts.account$.pipe(filter(a => a !== null), map(() => new Date())),
@@ -46,6 +59,10 @@ export class DashboardComponent {
     this.error.set(null);
     this.accounts
       .loadMyAccount()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: (err: ApiError) => this.error.set(err.message) });
+    this.accounts
+      .loadMyAccounts()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ error: (err: ApiError) => this.error.set(err.message) });
   }

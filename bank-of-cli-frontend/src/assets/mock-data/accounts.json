@@ -20,4 +20,27 @@
     "balance": 25.0,
     "currency": "USD"
   }
+
+  ,
+{
+  "id": "ACC-1004",
+  "userId": "u1",
+  "type": "savings",
+  "balance": 500.00,
+  "currency": "USD"
+},
+{
+  "id": "ACC-1005",
+  "userId": "u2",
+  "type": "savings",
+  "balance": 750.00,
+  "currency": "USD"
+},
+{
+  "id": "ACC-1006",
+  "userId": "u3",
+  "type": "savings",
+  "balance": 250.00,
+  "currency": "USD"
+}
 ]

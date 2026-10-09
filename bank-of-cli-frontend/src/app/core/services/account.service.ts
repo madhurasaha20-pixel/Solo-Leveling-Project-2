@@ -23,13 +23,18 @@ export class AccountService {
   private api = environment.apiBase;
 
   private accountSubject = new BehaviorSubject<Account | null>(null);
+  private accountsSubject = new BehaviorSubject<Account[]>([]);
+  readonly accounts$: Observable<Account[]> = this.accountsSubject.asObservable();
 
   /** Current account, or null before loading / after logout. */
   readonly account$: Observable<Account | null> = this.accountSubject.asObservable();
 
   constructor() {
     inject(AuthService).currentUser$.subscribe(user => {
-      if (!user) this.accountSubject.next(null);
+      if (!user) {
+        this.accountSubject.next(null);
+        this.accountsSubject.next([]);
+      }
     });
   }
 
@@ -45,8 +50,22 @@ export class AccountService {
     );
   }
 
+  /** GET /accounts. Returns the logged-in user's checking and savings accounts. */
+  loadMyAccounts(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${this.api}/accounts`).pipe(
+      tap(accounts => this.accountsSubject.next(accounts)),
+      catchError(err => throwError(() => toApiError(err)))
+    );
+  }
+
   /** Called by TransactionService after a successful transaction. Components don't need this. */
   updateCachedAccount(account: Account): void {
     this.accountSubject.next(account);
+
+    const updatedAccounts = this.accountsSubject.value.map(existing =>
+      existing.id === account.id ? account : existing
+    );
+
+    this.accountsSubject.next(updatedAccounts);
   }
 }
